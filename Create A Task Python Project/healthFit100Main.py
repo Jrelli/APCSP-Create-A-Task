@@ -93,6 +93,7 @@ def main():
             if values[1] != '':
                 calories.append(values[1])
                 validInput = True
+            # if one wasn't, then popup letting user know that calories are needed
             else:
                 validInput = False
                 print("Calories Needed!")
@@ -111,43 +112,50 @@ def main():
    
         # If the log cardio button is pressed.
         elif event == "Log Cardio Entry":
-            # If no weight was entered, then don't run and print out error
+            # If weight was entered, then append user Weight and valid input is true
             if values[2] != '':
                 userWeight = values[2]
                 validInput = True
+            # If no weight was entered, then don't run and print out error and popup, and no valid input
             else:
                 validInput = False
                 print("User Weight Needed!")
                 GUI.popup("User Weight Needed!", keep_on_top = True)
 
-            # If weight was entered, check if distance was entered, then append calendar
+            # If there was a valid input
             if validInput:
+                # Check if there was a valid input for distance
                 if values[3] != '':
                     distanceTraveled.append(values[3])
                     validInput = True
+                # If there wasn't a valid input, then popup and error message
                 else:
                     validInput = False
                     print("Distance Ran Needed!")
                     GUI.popup("Distance Ran Needed!", keep_on_top = True)
 
+                # If both weight and distance were entered, then append calendar.
                 if validInput:
                     if values["Cardio Calendar"] != '':
                         cardioEntryDates.append(str(values["Cardio Calendar"])[0:9])
+                    # If no date was added, get current date from the computer (0:9 because time is removed, leaving just the date.)
                     else:
                         cardioEntryDates.append(str(datetime.now())[0:9])
         
         # If the log weight training entry was added
         elif event == "Log Weight Training Entry":
-            # If a value was entered.
+            # If a value was entered, append lists
             if(values[0] != '' or values[0] != ''):
                 workoutWeight.append(values[4])
                 workoutReps.append(values[5])
                 validInput = True
+            # If no valid inputs, then error message and popup
             else:
                 validInput = False
                 print("Reps and/or Weight needed!")
                 GUI.popup("Reps and/or Weight needed!", keep_on_top = True)
 
+            # If input is valid then append date
             if validInput:
                 if weightEntryDates != '':
                     weightEntryDates.append(str(values["Weight Calendar"])[0:9])
@@ -156,36 +164,47 @@ def main():
 
         # If the list of food buttons is pressed
         elif event == "Foods Review":
+            # If names were added
             if(len(foodDrinkNames) > 0):
+                # lists off names and dates
                 GUI.popup("Food and Drinks Consumed: " + str(foodDrinkNames) + "\n Dates Consumed: " + str(foodEntryDates), keep_on_top = True)
             else:
+                # popup if no names
                 GUI.popup("No Food Name entries in database...", keep_on_top = True)
                 
         
         # If the list of food buttons is pressed
         elif event == "Calories Review":
+            # get total calories from list
             totalCalories = 0
             for calorieEntry in calories:
                 totalCalories += float(calorieEntry)
             
+            # get total distance from list
             totalDistanceTraveled = 0
             for distanceEntry in distanceTraveled:
                 totalDistanceTraveled += float(distanceEntry)
 
+            # get total weight lifted from lists
             totalWeightLifted = 0
             for reps in workoutReps:
                 for weightEntry in workoutWeight:
                     totalWeightLifted += (float(weightEntry) * float(reps))
 
+            # get total calories burned from variables
             totalCaloriesBurned = (float(totalWeightLifted) / 10) + (float(totalDistanceTraveled) * float(userWeight))
+            
+            # popup with total calories eaten, total calories burned, and your deficit or surplus
             GUI.popup("Total Calories Eaten: " + str(totalCalories) + "\nTotal Calories Burned: " + str(totalCaloriesBurned) + "\nCalorie Surplus or Deficit: " + str(float(totalCalories) - float(totalCaloriesBurned)), keep_on_top = True)
 
         # If the list of food buttons is pressed
         elif event == "Workout Review":
+            # get total distance traveled form list
             totalDistanceTraveled = 0
             for distanceEntry in distanceTraveled:
                 totalDistanceTraveled += float(distanceEntry)
             
+            # get total weight lifted and total reps
             totalWeightLifted = 0
             totalReps = 0
             for reps in workoutReps:
@@ -193,6 +212,7 @@ def main():
                 for weightEntry in workoutWeight:
                     totalWeightLifted += (int(weightEntry) * int(reps))
 
+            # popup with total distance walked/ran, total weight lifted, and total reps
             GUI.popup("Total Distance Walked/Ran: " + str(totalDistanceTraveled) + "miles " + "\nTotal Weight Lifted: " + str(totalWeightLifted) + "lbs " + "\nTotal Reps: " + str(totalReps), keep_on_top = True)
 
         # Prints for testing
