@@ -1,4 +1,6 @@
 # Importing the Py Simple GUI module to create a Graphical User Interface
+# Py Simple GUI is an external library not made by me, here is a link to their website
+# https://www.pysimplegui.org/en/latest/
 import PySimpleGUI as GUI
 
 # Importing date and time from the computer to, as you guessed, access the date and time
@@ -40,9 +42,10 @@ def main():
     cardioLayout = [[GUI.Text("Log your cardio workouts")],
                     [GUI.Input(key = "Cardio Calendar", size = (20,1)), GUI.CalendarButton("Click to pop out calendar", close_when_date_chosen = True,  target = "Cardio Calendar", no_titlebar = False,)],
                     [GUI.Text("Enter runner's weight(lbs): "), GUI.InputText()], # input text
-                    [GUI.Text("Enter the distance taveled(miles): "), GUI.InputText()], # input text
+                    [GUI.Text("Enter the distance traveled(miles): "), GUI.InputText()], # input text
                     [GUI.Button("Log Cardio Entry")]]
     
+    # layout object to hold the elements on the weight training tab
     weightTrainingLayout = [[GUI.Text("Log your weight workouts")],
                             [GUI.Input(key = "Weight Calendar", size = (20,1)), GUI.CalendarButton("Click to pop out calendar", close_when_date_chosen = True,  target = "Weight Calendar", no_titlebar = False,)],
                             [GUI.Text("Enter the weight used(lbs): "), GUI.InputText()], # input text
@@ -86,7 +89,7 @@ def main():
         
         # If the log food entry button is pressed
         elif event == "Log Food Entry":
-            # Check if a value was inputed for calories, if one was append to the list
+            # Check if a value was inputted for calories, if one was append to the list
             if values[1] != '':
                 calories.append(values[1])
                 validInput = True
@@ -95,7 +98,7 @@ def main():
                 print("Calories Needed!")
                 GUI.popup("Calories Needed!", keep_on_top = True)
             
-            # If calories were inputed, then append the date and name lists
+            # If calories were inputted, then append the date and name lists
             if validInput:
                 # If no calendar date was entered, by default today is entered
                 if values["Food Calendar"] != '':
@@ -117,7 +120,7 @@ def main():
                 print("User Weight Needed!")
                 GUI.popup("User Weight Needed!", keep_on_top = True)
 
-            # If weight was entered, check if distance was entered, then appened calendar
+            # If weight was entered, check if distance was entered, then append calendar
             if validInput:
                 if values[3] != '':
                     distanceTraveled.append(values[3])
@@ -137,11 +140,11 @@ def main():
         elif event == "Log Weight Training Entry":
             # If a value was entered.
             if(values[0] != '' or values[0] != ''):
-                workoutWeight.append(values[0])
-                workoutReps.append(values[0])
+                workoutWeight.append(values[4])
+                workoutReps.append(values[5])
                 validInput = True
             else:
-                validinput = False
+                validInput = False
                 print("Reps and/or Weight needed!")
                 GUI.popup("Reps and/or Weight needed!", keep_on_top = True)
 
@@ -154,9 +157,10 @@ def main():
         # If the list of food buttons is pressed
         elif event == "Foods Review":
             if(len(foodDrinkNames) > 0):
-                GUI.popup("Food and Drinks Consumed: " + str(foodDrinkNames), keep_on_top = True)
+                GUI.popup("Food and Drinks Consumed: " + str(foodDrinkNames) + "\n Dates Consumed: " + str(foodEntryDates), keep_on_top = True)
             else:
                 GUI.popup("No Food Name entries in database...", keep_on_top = True)
+                
         
         # If the list of food buttons is pressed
         elif event == "Calories Review":
@@ -171,25 +175,25 @@ def main():
             totalWeightLifted = 0
             for reps in workoutReps:
                 for weightEntry in workoutWeight:
-                    totalWeightLifted += (weightEntry * reps)
+                    totalWeightLifted += (float(weightEntry) * float(reps))
 
-            totalCaloriesBurned = (totalWeightLifted / 10) + (totalDistanceTraveled * userWeight)
-            GUI.popup("Total Calories Eaten: " + str(totalCalories) + "\nTotal Calories Burned: " + str(totalCaloriesBurned), keep_on_top = True)
+            totalCaloriesBurned = (float(totalWeightLifted) / 10) + (float(totalDistanceTraveled) * float(userWeight))
+            GUI.popup("Total Calories Eaten: " + str(totalCalories) + "\nTotal Calories Burned: " + str(totalCaloriesBurned) + "\nCalorie Surplus or Deficit: " + str(float(totalCalories) - float(totalCaloriesBurned)), keep_on_top = True)
 
         # If the list of food buttons is pressed
         elif event == "Workout Review":
             totalDistanceTraveled = 0
             for distanceEntry in distanceTraveled:
-                totalDistanceTraveled += distanceEntry
+                totalDistanceTraveled += float(distanceEntry)
             
             totalWeightLifted = 0
             totalReps = 0
             for reps in workoutReps:
-                totalReps += reps
+                totalReps += int(reps)
                 for weightEntry in workoutWeight:
-                    totalWeightLifted += (weightEntry * reps)
+                    totalWeightLifted += (int(weightEntry) * int(reps))
 
-            GUI.popup("Total Distance Walked/Ran: " + str(totalDistanceTraveled) + "\nTotal Weight Lifted: " + str(totalWeightLifted) + "\nTotal Reps: " + str(totalReps), keep_on_top = True)
+            GUI.popup("Total Distance Walked/Ran: " + str(totalDistanceTraveled) + "miles " + "\nTotal Weight Lifted: " + str(totalWeightLifted) + "lbs " + "\nTotal Reps: " + str(totalReps), keep_on_top = True)
 
         # Prints for testing
         print("Current Date: " + str(datetime.now())[0:9])
