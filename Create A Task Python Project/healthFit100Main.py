@@ -12,7 +12,7 @@ def main():
     
     # Set theme/color of window and its elements
     GUI.theme('DarkBlue14')
-    
+
     # lists to hold information relating to the gaining of calories
     foodDrinkNames = []
     calories = []
@@ -22,7 +22,7 @@ def main():
     # list to hold the weight and reps if the use does weight training
     workoutWeight = []
     workoutReps = []
-    
+
     # lists to hold the dates of entries
     cardioEntryDates = []
     weightEntryDates = []
@@ -179,11 +179,6 @@ def main():
             totalCalories = 0
             for calorieEntry in calories:
                 totalCalories += float(calorieEntry)
-            
-            # get total distance from list
-            totalDistanceTraveled = 0
-            for distanceEntry in distanceTraveled:
-                totalDistanceTraveled += float(distanceEntry)
 
             # get total weight lifted from lists
             totalWeightLifted = 0
@@ -192,18 +187,13 @@ def main():
                     totalWeightLifted += (float(weightEntry) * float(reps))
 
             # get total calories burned from variables
-            totalCaloriesBurned = (float(totalWeightLifted) / 10) + (float(totalDistanceTraveled) * float(userWeight))
+            totalCaloriesBurned = (float(totalWeightLifted) / 10) + (float(getTotalDistanceTraveled(distanceTraveled)) * float(userWeight))
             
             # popup with total calories eaten, total calories burned, and your deficit or surplus
             GUI.popup("Total Calories Eaten: " + str(totalCalories) + "\nTotal Calories Burned: " + str(totalCaloriesBurned) + "\nCalorie Surplus or Deficit: " + str(float(totalCalories) - float(totalCaloriesBurned)), keep_on_top = True)
 
         # If the list of food buttons is pressed
         elif event == "Workout Review":
-            # get total distance traveled form list
-            totalDistanceTraveled = 0
-            for distanceEntry in distanceTraveled:
-                totalDistanceTraveled += float(distanceEntry)
-            
             # get total weight lifted and total reps
             totalWeightLifted = 0
             totalReps = 0
@@ -213,7 +203,7 @@ def main():
                     totalWeightLifted += (int(weightEntry) * int(reps))
 
             # popup with total distance walked/ran, total weight lifted, and total reps
-            GUI.popup("Total Distance Walked/Ran: " + str(totalDistanceTraveled) + "miles " + "\nTotal Weight Lifted: " + str(totalWeightLifted) + "lbs " + "\nTotal Reps: " + str(totalReps), keep_on_top = True)
+            GUI.popup("Total Distance Walked/Ran: " + str(getTotalDistanceTraveled(distanceTraveled)) + "miles " + "\nTotal Weight Lifted: " + str(totalWeightLifted) + "lbs " + "\nTotal Reps: " + str(totalReps), keep_on_top = True)
 
         # Prints for testing
         print("Current Date: " + str(datetime.now())[0:9])
@@ -228,6 +218,14 @@ def main():
         print("Workout Reps List: " + str(workoutReps))
         print("Workout Entry Dates: " + str(cardioEntryDates))
         print("Food entry dates List: " + str(foodEntryDates))
+
+# Method/Function used to return my total distance Traveled.
+def getTotalDistanceTraveled(distanceTraveledList):
+    # get total distance from list
+    totalDistanceTraveled = 0
+    for distanceEntry in distanceTraveledList:
+        totalDistanceTraveled += float(distanceEntry)
+    return(totalDistanceTraveled)
 
 # Main method
 if __name__ == "__main__":
